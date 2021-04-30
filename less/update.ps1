@@ -15,23 +15,23 @@ function global:au_BeforeUpdate {
     set-alias 7z $Env:chocolateyInstall\tools\7z.exe
 
     $lessdir = "$PSScriptRoot\less-*-win*"
-    rm $lessdir -Recurse -Force -ea ignore
+    Remove-Itemmove-Item $lessdir -Recurse -Force -ea ignore
 
-    iwr $Latest.URL32 -OutFile "$PSScriptRoot\less.7z"
+    Invoke-WebRequest $Latest.URL32 -OutFile "$PSScriptRoot\less.7z"
     7z x $PSScriptRoot\less.7z
 
-    rm $PSScriptRoot\tools\* -Recurse -Force -Exclude VERIFICATION.txt
-    mv $lessdir\* $PSScriptRoot\tools -Force
-    rm $lessdir -Recurse -Force -ea ignore
-    rm $PSScriptRoot\less.7z -ea ignore
+    Remove-Item $PSScriptRoot\tools\* -Recurse -Force -Exclude VERIFICATION.txt
+    Move-Item $lessdir\* $PSScriptRoot\tools -Force
+    Remove-Item $lessdir -Recurse -Force -ea ignore
+    Remove-Item $PSScriptRoot\less.7z -ea ignore
 }
 
 function global:au_GetLatest {
     $download_page = Invoke-WebRequest -Uri $releases -UseBasicParsing
 
     $re  = 'less-.+win.+\.7z$'
-    $url = $download_page.links | ? href -match $re | select -First 1 -expand href
-    $version = "$( ($url -split '-' | select -Index 1) / 100 )"
+    $url = $download_page.links | Where-Object href -match $re | Select-Object -First 1 -expand href
+    $version = "$( ($url -split '-' | Select-Object -Index 1) / 100 )"
     @{
        URL32   = $releases + $url
        Version = $version
