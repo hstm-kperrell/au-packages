@@ -1,0 +1,10 @@
+  node {
+      powershell '''
+          Set-Location (Join-Path -Path $env:SystemDrive -ChildPath 'scripts')
+          .\\Update-ProdRepoFromTest.ps1 `
+              -ProdRepo $env:P_PROD_REPO_URL `
+              -ProdRepoApiKey $env:P_PROD_REPO_API_KEY `
+              -TestRepo $env:P_TEST_REPO_URL `
+              -Verbose
+      '''
+  }
