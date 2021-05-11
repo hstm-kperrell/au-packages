@@ -1,4 +1,4 @@
-$log = "azcopy10"
+$app = "_temp"
 $install = choco list -localonly | Select-String $app
 
 if ($null -ne $install) {
