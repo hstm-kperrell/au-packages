@@ -1,4 +1,4 @@
-$app = "_temp"
+$app = "everything"
 $install = choco list -localonly | Select-String $app
 
 if ($null -ne $install) {

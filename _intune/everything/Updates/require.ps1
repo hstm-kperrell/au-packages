@@ -1,5 +1,4 @@
-$app = "_temp
-"
+$app = "everything"
 $update = choco outdated | Select-String $app
 
 if ($null -ne $update) {
